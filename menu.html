@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Menu</title>
+        <style>
+                body {
+                        background-image: url("assets/images/div.jpg");
+                        background-repeat: no-repeat;
+                        background-size: cover;
+                        background-color: rgb(9, 9, 9);
+                        font-family: Arial, sans-serif;
+                }
+
+                .menu-section {
+                        margin-bottom: 20px;
+                }
+
+                h2 {
+                        color: #e900ab;
+
+                }
+
+                h1 {
+                        color: rgb(239, 245, 245);
+                        text-align: center;
+
+                }
+
+                ul {
+                        list-style-type: none;
+                        padding: 0;
+                }
+
+                ul li {
+                        margin: 10px;
+                }
+
+                .price {
+                        float: right;
+                        font-size: larger;
+
+                }
+
+                li {
+                        font-size: larger;
+                        color: rgb(249, 141, 18);
+                }
+
+                .add-to-cart-small {
+                        background-color: #ff9d2d;
+                        color: white;
+                        border: none;
+                        padding: 5px 10px;
+                        cursor: pointer;
+                        border-radius: 5px;
+                        margin-left: 10px;
+                        font-size: 0.8em;
+                }
+
+                .add-to-cart-small:hover {
+                        background-color: #e68a00;
+                }
+
+                /* Basic Cart Modal Styles */
+                .cart-btn-floating {
+                        position: fixed;
+                        bottom: 20px;
+                        right: 20px;
+                        background: #ff9d2d;
+                        color: white;
+                        border: none;
+                        border-radius: 50%;
+                        width: 60px;
+                        height: 60px;
+                        font-size: 24px;
+                        cursor: pointer;
+                        z-index: 1000;
+                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                }
+
+                .cart-count {
+                        position: absolute;
+                        top: -5px;
+                        right: -5px;
+                        background: red;
+                        color: white;
+                        border-radius: 50%;
+                        padding: 2px 6px;
+                        font-size: 12px;
+                        font-weight: bold;
+                }
+
+                .cart-modal {
+                        display: none;
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(0, 0, 0, 0.5);
+                        z-index: 1001;
+                        justify-content: flex-end;
+                }
+
+                .cart-modal.active {
+                        display: flex;
+                }
+
+                .cart-content {
+                        background: white;
+                        width: 100%;
+                        max-width: 400px;
+                        height: 100%;
+                        padding: 20px;
+                        display: flex;
+                        flex-direction: column;
+                        animation: slideIn 0.3s ease-out;
+                }
+
+                @keyframes slideIn {
+                        from {
+                                transform: translateX(100%);
+                        }
+
+                        to {
+                                transform: translateX(0);
+                        }
+                }
+
+                .cart-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        border-bottom: 1px solid #eee;
+                        padding-bottom: 10px;
+                        margin-bottom: 10px;
+                }
+
+                .cart-items {
+                        flex-grow: 1;
+                        overflow-y: auto;
+                }
+
+                .cart-item {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 10px;
+                        border-bottom: 1px solid #f0f0f0;
+                        padding-bottom: 5px;
+                        color: black;
+                }
+
+                .cart-item-actions button {
+                        background: #eee;
+                        border: none;
+                        padding: 2px 8px;
+                        cursor: pointer;
+                        margin: 0 2px;
+                }
+
+                .cart-footer {
+                        border-top: 1px solid #eee;
+                        padding-top: 10px;
+                        color: black;
+                }
+
+                .cart-total {
+                        display: flex;
+                        justify-content: space-between;
+                        font-size: 1.2em;
+                        font-weight: bold;
+                        margin-bottom: 10px;
+                }
+
+                .btn {
+                        padding: 10px;
+                        background: #e900ab;
+                        color: white;
+                        border: none;
+                        cursor: pointer;
+                        width: 100%;
+                        margin-top: 5px;
+                }
+
+                .qrcode-container {
+                        display: flex;
+                        justify-content: center;
+                        margin: 10px 0;
+                }
+        </style>
+</head>
+
+<body>
+
+        <h1>Menu</h1>
+
+        <!-- Existing Sections -->
+
+        <div class="menu-section">
+                <h2>Desserts</h2>
+                <ul>
+                        <li>Cone American Nut <span class="price">₹50/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Cone Gulab Jamun <span class="price">₹40/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Cup Cake <span class="price">₹15/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Cake <span class="price">On Order</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                </ul>
+        </div>
+
+        <div class="menu-section">
+                <h2>Beverages</h2>
+                <ul>
+                        <li>Water Bottle <span class="price">₹20/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Cold Drinks <span class="price">₹50/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Tea <span class="price">₹30/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Coffee <span class="price">₹50/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Vanilla Shake <span class="price">₹100/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Strawberry Shake <span class="price">₹120/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Banana Shake <span class="price">₹100/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Butter Scotch Shake <span class="price">₹120/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Oreo Shake <span class="price">₹150/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Kitkat Shake <span class="price">₹150/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Vrindavan Bites Special <span class="price">₹250/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Special Shake <span class="price">N/A/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                </ul>
+        </div>
+
+        <div class="menu-section">
+                <h2>Snacks/Fast Food</h2>
+                <ul>
+                        <li>Plain Dosa <span class="price">₹70/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Masala Dosa <span class="price">₹90/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Onion Masala Dosa <span class="price">₹100/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Paneer Dosa <span class="price">₹120/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Spring Roll Dosa <span class="price">₹150/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Vrindavan Bites Special Dosa <span class="price">₹200/-</span> <button
+                                        class="add-to-cart-small" onclick="addToCartFromElement(this)">Add</button></li>
+                </ul>
+        </div>
+
+        <div class="menu-section">
+                <h2>Pizza</h2>
+                <ul>
+                        <li>Veg. Pizza <span class="price">₹100/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Onion Pizza <span class="price">₹150/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Capsicum Pizza <span class="price">₹150/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Margherita Pizza <span class="price">₹180/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Double Cheese Pizza <span class="price">₹200/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Paneer Pizza <span class="price">₹200/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Golden Corn Pizza <span class="price">₹220/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Vrindavan Bites Special Pizza <span class="price">₹250/-</span> <button
+                                        class="add-to-cart-small" onclick="addToCartFromElement(this)">Add</button></li>
+                </ul>
+        </div>
+
+        <div class="menu-section">
+                <h2>Burger & Sandwich</h2>
+                <ul>
+                        <li>Veg. Burger Normal <span class="price">₹50/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Cheese Burger <span class="price">₹70/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Paneer Burger <span class="price">₹70/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Paneer Cheese Burger <span class="price">₹100/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Veg. Sandwich <span class="price">₹40/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Grilled Veg. Sandwich <span class="price">₹80/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                </ul>
+        </div>
+
+        <div class="menu-section">
+                <h2>Chinese</h2>
+                <ul>
+                        <li>Spring Roll <span class="price">₹80/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Chilli Potato <span class="price">₹100/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Honey Chilli Potato <span class="price">₹120/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Fried Rice <span class="price">₹120/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Gravy Manchurian <span class="price">₹120/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Dry Manchurian <span class="price">₹120/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Chilli Paneer Dry <span class="price">₹150/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Chilli Paneer Gravy <span class="price">₹150/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Veg. Noodles <span class="price">₹100/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Hakka Noodles <span class="price">₹150/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Chilli Garlic Noodles <span class="price">₹160/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Singapuri Noodles <span class="price">₹180/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                </ul>
+        </div>
+
+        <div class="menu-section">
+                <h2>Uttapam</h2>
+                <ul>
+                        <li>Plain Uttapam <span class="price">₹80/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Onion Uttapam <span class="price">₹100/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Mix Veg. Uttapam <span class="price">₹120/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Idli (2 pcs) <span class="price">₹50/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Pav Bhaji <span class="price">₹80/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Masala Pav Bhaji <span class="price">₹100/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Moong Dal Cheela <span class="price">₹70/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Special Moong Dal Cheela <span class="price">₹100/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                </ul>
+        </div>
+
+        <!-- Additional Menu Sections -->
+
+        <div class="menu-section">
+                <h2>Breads</h2>
+                <ul>
+                        <li>Plain Roti <span class="price">₹10/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Butter Roti <span class="price">₹15/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Missi Roti <span class="price">₹30/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Plain Naan <span class="price">₹25/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Butter Naan <span class="price">₹40/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Lachha Paratha <span class="price">₹40/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Garlic Naan <span class="price">₹50/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Stuffed Naan <span class="price">₹80/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Khandari Naan <span class="price">₹80/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Muskan Roti <span class="price">₹30/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Aloo Paratha <span class="price">₹80/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Aloo Pyaj Paratha <span class="price">₹90/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <li>Paneer Paratha <span class="price">₹120/-</span> <button class="add-to-cart-small"
+                                        onclick="addToCartFromElement(this)">Add</button></li>
+                        <div class="menu-section">
+                                <h2>Raita</h2>
+                                <ul>
+                                        <li>Plain Dahi <span class="price">₹80/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Boondi Raita <span class="price">₹90/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Mix Vegetable Raita <span class="price">₹100/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Pineapple Raita <span class="price">₹140/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                </ul>
+                        </div>
+
+                        <div class="menu-section">
+                                <h2>Thali</h2>
+                                <ul>
+                                        <li>Thali <span class="price">₹120/-</span> <button class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)"></button></li>
+                                        <li>Gold Thali <span class="price">₹200/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Diamond Thali <span class="price">₹250/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Vrindavan Special Thali <span class="price">₹300/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                </ul>
+                        </div>
+
+
+                        <div class="menu-section">
+                                <h2>Sweets & Ice Cream</h2>
+                                <ul>
+                                        <li>Gulab Jamun <span class="price">₹30/-/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Cone Butter Scotch <span class="price">₹35/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Cone Chocolate <span class="price">₹40/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                </ul>
+                        </div>
+
+                        <div class="menu-section">
+                                <h2>Vegetables</h2>
+                                <ul>
+                                        <li>Aloo Matar/Tomato <span class="price">₹100/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Aloo Jeera <span class="price">₹120/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Aloo Gobhi <span class="price">₹120/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Chana Masala <span class="price">₹150/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Matar Masala <span class="price">₹150/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Matar Mashroom <span class="price">₹170/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Mix Veg. <span class="price">₹150/-</span> <button class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Dum Aloo <span class="price">₹150/-</span> <button class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Kashmiri Dum Aloo <span class="price">₹180/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Malai Kofta <span class="price">₹250/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                </ul>
+                        </div>
+                        <div class="menu-section">
+                                <h2>Rice</h2>
+                                <ul>
+                                        <li>Plain Rice <span class="price">₹100/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Jeera Rice <span class="price">₹140/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Matar Pulav <span class="price">₹140/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Navratan Pulav <span class="price">₹200/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Veg. Biryani <span class="price">₹200/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                </ul>
+                        </div>
+
+                        <div class="menu-section">
+                                <h2>Tandoori Chaap</h2>
+                                <ul>
+
+                                        <li>Masala Chaap <span class="price">₹150/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Afghani Chaap <span class="price">₹170/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Kadai Chaap <span class="price">₹170/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Malai Chaap <span class="price">₹180/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+
+                        </div>
+
+                        <div class="menu-section">
+                                <h2>Paneer Tikka</h2>
+                                <ul>
+                                        <li>Paneer Tikka<span class="price">₹150/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Malai Tikka<span class="price">₹180/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Afghani Tikka <span class="price">₹180/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Veg Kabab <span class="price">₹200/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                </ul>
+                        </div>
+
+                        <div class="menu-section">
+                                <h2>Dal</h2>
+                                <ul>
+                                        <li>Dal Tadka<span class="price">₹100/-</span> <button class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)"></button></li>
+                                        <li>Dal Hariyanvi<span class="price">₹120/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Dal Punjabi Tadka <span class="price">₹140/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Dal Handi <span class="price">₹130/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Dal Makhani<span class="price">₹140/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                </ul>
+                        </div>
+
+                        <div class="menu-section">
+
+
+                                <h2>Paneer Dishes</h2>
+                                <ul>
+                                        <li>Shahi Paneer <span class="price">₹180/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Kadai Paneer <span class="price">₹200/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Paneer Butter Masala <span class="price">₹200/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Matar Paneer <span class="price">₹150/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Palak Paneer <span class="price">₹150/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Chhole Paneer <span class="price">₹160/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Paneer Handi <span class="price">₹200/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Paneer Kalimirch <span class="price">₹200/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Paneer Lababdar <span class="price">₹220/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Khowa Paneer <span class="price">₹250/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Paneer Afghani <span class="price">₹250/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Paneer Korma <span class="price">₹250/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+                                        <li>Paneer Dopyaja <span class="price">₹250/-</span> <button
+                                                        class="add-to-cart-small"
+                                                        onclick="addToCartFromElement(this)">Add</button></li>
+
+                                </ul>
+                        </div>
+                        <!-- Floating Cart Button -->
+                        <button class="cart-btn-floating" onclick="toggleCartModal()">
+                                <ion-icon name="cart-outline"></ion-icon>
+                                <span class="cart-count">0</span>
+                        </button>
+
+                        <!-- Cart Modal -->
+                        <div id="cart-modal" class="cart-modal">
+                                <div class="cart-content">
+                                        <div class="cart-header">
+                                                <h3>Your Cart</h3>
+                                                <button class="close-cart"
+                                                        style="background:none; border:none; font-size:24px; cursor:pointer;"
+                                                        onclick="toggleCartModal()">&times;</button>
+                                        </div>
+                                        <div id="cart-items-container" class="cart-items">
+                                                <!-- Cart items will be rendered here -->
+                                        </div>
+                                        <div class="cart-footer">
+                                                <div class="cart-total">
+                                                        <span>Total:</span>
+                                                        <span id="cart-total-price">₹0.00</span>
+                                                </div>
+                                                <div id="checkout-section">
+                                                        <button class="btn btn-hover"
+                                                                onclick="generatePaymentQR()">Proceed to Pay</button>
+                                                </div>
+                                                <div id="payment-section" style="display: none;">
+                                                        <h4>Scan to Pay</h4>
+                                                        <div id="qrcode" class="qrcode-container"></div>
+                                                        <p>Scan with any UPI app</p>
+                                                        <button class="btn btn-secondary"
+                                                                onclick="document.getElementById('payment-section').style.display='none'; document.getElementById('checkout-section').style.display='block'">Back</button>
+                                                </div>
+                                        </div>
+                                </div>
+                        </div>
+
+                        <!-- Scripts -->
+                        <script type="module"
+                                src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+                        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+                        <script src='js/cart.js'></script>
+</body>
+
+</html>
